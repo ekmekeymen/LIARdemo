@@ -1,34 +1,21 @@
 using UnityEngine;
 
-public class ControllerScript : MonoBehaviour
+public class PlayerMove : MonoBehaviour
 {
-    [SerializeField] private Transform _OriantationTransform;
+    public float speed = 5f;
+    Rigidbody rb;
 
-    private float _Horizontalİnput, _Verticalİnput;
-    private Rigidbody _PlayerRigidbody;
-    private Vector3 _MovementDirection;
-
-    void Awake()
+    void Start()
     {
-        _PlayerRigidbody = GetComponent<Rigidbody>();
-        _PlayerRigidbody.freezeRotation = true;
+        rb = GetComponent<Rigidbody>();
     }
 
-    void Update()
+    void FixedUpdate()
     {
-        Setİnputs();
-    }
+        float h = Input.GetAxis("Horizontal");
+        float v = Input.GetAxis("Vertical");
 
-    private void Setİnputs()
-    {
-        _Horizontalİnput = Input.GetAxisRaw("Horizontal");
-        _Verticalİnput = Input.GetAxisRaw("Vertical");
-    }
-
-    private void PlayerMovement()
-    {
-        _MovementDirection = _OriantationTransform.forward * _Verticalİnput + _OriantationTransform.right * _Horizontalİnput;
-
-        _PlayerRigidbody.AddForce(_MovementDirection * 10f, ForceMode.Force);
+        Vector3 move = new Vector3(h, 0, v) * speed;
+        rb.linearVelocity = new Vector3(move.x, rb.linearVelocity.y, move.z);
     }
 }
